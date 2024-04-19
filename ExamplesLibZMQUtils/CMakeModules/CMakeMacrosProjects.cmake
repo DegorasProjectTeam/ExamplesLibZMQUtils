@@ -101,7 +101,7 @@ MACRO(macro_find_package_default package version version_mode extra_search_paths
             "external/${package}"                 # In the same project.
             "../${package}"                       # As subproject installation
             "../../${package}"                    # As subproject installation
-            "C:/${package}"                       # In standard root folder.
+            "C:/*${package}*"                     # In standard root folder.
             "C:/Program Files/${package}"         # Standard installation.
             "C:/Program Files (x86)/${package}"   # Standard installation.
         )
@@ -131,6 +131,8 @@ MACRO(macro_find_package_default package version version_mode extra_search_paths
             set(CURRENT_SEARCH "${PATH}/${PATTERN}")
             file(GLOB PATTERN_DIRS "${CURRENT_SEARCH}")
 
+            message(STATUS "  Current search: ${CURRENT_SEARCH}")
+
             # Iterate through the list of paths
             foreach(MATCH IN LISTS PATTERN_DIRS)
                 get_filename_component(MATCH "${MATCH}" ABSOLUTE)
@@ -140,7 +142,6 @@ MACRO(macro_find_package_default package version version_mode extra_search_paths
                      message(STATUS "  Checking: ${MATCH}/${CONFIG_PATTERN}")
                      if(EXISTS "${MATCH}/${CONFIG_PATTERN}")
                          list(APPEND FOUND_PATHS "${MATCH}")
-                         break()
                      endif()
                  endforeach()
 

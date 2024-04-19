@@ -91,7 +91,7 @@ macro_global_set_main_dep_set_name("${PROJ_NAME}_deps")
 
 # Configure the LibZMQUtils package.
 include(ConfigLibZMQUtils)
-macro_configure_libzmqutils_default("1.6.2" "" "" "")
+macro_configure_libzmqutils_default("1.6.3" "" "" "")
 
 # Include the LibZMQUtils directories.
 include_directories(${LibZMQUtils_INCLUDES})
