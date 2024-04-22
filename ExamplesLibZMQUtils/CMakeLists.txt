@@ -31,7 +31,7 @@
 # **********************************************************************************************************************
 
 # **********************************************************************************************************************
-# Updated 15/04/2024
+# Updated 22/04/2024
 # **********************************************************************************************************************
 
 # **********************************************************************************************************************
@@ -52,14 +52,14 @@ set(CMAKE_MODULE_PATH
 
 # Init CMake modules.
 include(CMakeMacrosGlobals)
-macro_cmakemodules_init()
+macro_cmakemodules_init("24.04.22")
 
 # ----------------------------------------------------------------------------------------------------------------------
 # BASIC PROJECT CONFIGURATION
 
 # Base project configuration.
 set(PROJ_NAME ExamplesLibZMQUtils)
-set(PROJ_VER 1.0.0)
+set(PROJ_VER 1.6.4)
 set(PROJ_BUILD_MODE Debug)
 set(PROJ_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../${PROJ_NAME}_product_v${PROJ_VER})
 set(PROJ_LANGUAGES CXX C)
@@ -81,7 +81,7 @@ set(CMAKE_CXX_STANDARD 17)
 macro_setup_default_install_dir(${PROJ_INSTALL_DIR})
 
 # Set the installation example path.
-set(GLOBAL_LIBZMQUTILS_EXAMPLES_INSTALL_PATH ${MODULES_GLOBAL_INSTALL_BIN_PATH}/examples)
+set(GLOBAL_LIBZMQUTILS_EXAMPLES_INSTALL_PATH ${MODULES_GLOBAL_INSTALL_BIN_PATH})
 
 # Define the global dependency set name.
 macro_global_set_main_dep_set_name("${PROJ_NAME}_deps")
@@ -89,16 +89,23 @@ macro_global_set_main_dep_set_name("${PROJ_NAME}_deps")
 # ----------------------------------------------------------------------------------------------------------------------
 # SPECIFIC PROJECT CONFIGURATION
 
+# WARNING QT CREATOR BUG
+set(AVOID_QTCREATOR13_DLL_SEARCH_BUG TRUE)
+
 # Configure the LibZMQUtils package.
 include(ConfigLibZMQUtils)
-macro_configure_libzmqutils_default("1.6.3" "" "" "")
+macro_configure_libzmqutils_default("1.6.4" "" "" "")
 
-# Include the LibZMQUtils directories.
+# Global include the LibZMQUtils directories.
 include_directories(${LibZMQUtils_INCLUDES})
 
-# Add the LibZMQUtils to global link.
+# Add external libraries location paths to global scope.
+macro_global_add_libs_full_paths("${LibZMQUtils_LOCATION}" "${LibZMQUtils_LOCATION_DEPENDENCIES}")
+macro_global_add_libs_folders("${LibZMQUtils_LOCATION_DIR}" "${LibZMQUtils_LOCATION_DEPENDENCIES_DIR}")
+
+# Add the LibZMQUtils to global link variable.
 # NOTE You can comment this and link each launcher in a separated way.
-#macro_global_add_libzmqutils_to_libs_debug()
+#macro_global_add_libs_auto(${LibZMQUtils_LOCATION})
 
 # ----------------------------------------------------------------------------------------------------------------------
 # CONFIGURE THE COMPILERS
@@ -118,11 +125,26 @@ endif()
 # INSTALLATION PROCESS
 
 # External libs locations.
-set(ext_libs_loc ${LIBZMQ_LIBRARY_DIRS} ${LibZMQUtils_LOCATION_DIR})
+#set(ext_libs_loc ${LibZMQUtils_LOCATION_DEPENDENCIES_DIR} ${LibZMQUtils_LOCATION_DIR})
 
 # ----------------------------------------------------------------------------------------------------------------------
 # SETUP THE EXAMPLES
 
 add_subdirectory(PublisherSubscriber)
+add_subdirectory(CommandServerClient)
+
+# **********************************************************************************************************************
+
+# **********************************************************************************************************************
+
+# WARNING Only for avoid the QTCREATOR 13 BUG WHEN EXECUTING LAUNCHERS.
+if (WIN32 AND AVOID_QTCREATOR13_DLL_SEARCH_BUG)
+    message(STATUS "Re-installing runtime deps due to QTCreator 13 bug...")
+    message(STATUS "  Runtime deps: ${MODULES_GLOBAL_LIBS_FULL_PATHS}")
+    foreach(deploy_dir IN LISTS MODULES_GLOBAL_LAUNCHER_DEPLOYS_DIRS)
+        message(STATUS "  Processing launchers deployment directory: ${deploy_dir}")
+        install(FILES ${MODULES_GLOBAL_LIBS_FULL_PATHS} DESTINATION "${deploy_dir}")
+    endforeach()
+endif()
 
 # **********************************************************************************************************************

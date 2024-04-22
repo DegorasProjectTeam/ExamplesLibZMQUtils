@@ -12,7 +12,7 @@ set(EXAMPLE_NAME PublisherSubscriberAmelas)
 set(EXAMPLE_DIR ${CMAKE_SOURCE_DIR}/${MODULE_NAME}/${EXAMPLE_NAME})
 set(EXAMPLE_FULL_NAME ${EXAMPLE_NAME})
 set(EXAMPLE_INSTALL_PATH ${GLOBAL_LIBZMQUTILS_EXAMPLES_INSTALL_PATH}/${EXAMPLE_FULL_NAME})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Examples/${EXAMPLE_FULL_NAME})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${EXAMPLE_FULL_NAME})
 set(INTERFACE_PUBLISHER "AmelasLoggerPublisherInterface")
 set(APP_PUBLISHER "Example_LoggerPub_Amelas")
 set(APP_SUBSCRIBER "Example_LoggerSub_Amelas")
@@ -108,9 +108,6 @@ macro_link_libzmqutils_default(${APP_SUBSCRIBER} PUBLIC)
 # ----------------------------------------------------------------------------------------------------------------------
 # INSTALLATION PROCESS
 
-# Prepare the external library search folders.
-set(ext_libs_loc "${ext_libs_loc}" "${MODULES_GLOBAL_INSTALL_LIB_PATH}" "${MODULES_GLOBAL_INSTALL_BIN_PATH}")
-
 # Install the launcher for publisher.
 macro_install_launcher("${APP_PUBLISHER}"
                        "${EXAMPLE_INSTALL_PATH}")
@@ -132,14 +129,14 @@ macro_install_runtime_artifacts("${APP_SUBSCRIBER}"
 # Install the runtime dependencies for publisher.
 macro_install_runtime_deps("${APP_PUBLISHER}"
                             "${MODULES_GLOBAL_MAIN_DEP_SET_NAME}"
-                            "${ext_libs_loc}"
+                            "${MODULES_GLOBAL_LIBS_FOLDERS}"
                             "${EXAMPLE_INSTALL_PATH}"
                             "" "")
 
 # Install the runtime dependencies for subscriber.
 macro_install_runtime_deps("${APP_SUBSCRIBER}"
                             "${MODULES_GLOBAL_MAIN_DEP_SET_NAME}"
-                            "${ext_libs_loc}"
+                            "${MODULES_GLOBAL_LIBS_FOLDERS}"
                             "${EXAMPLE_INSTALL_PATH}"
                             "" "")
 

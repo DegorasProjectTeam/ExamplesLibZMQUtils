@@ -1,5 +1,5 @@
 # **********************************************************************************************************************
-# Updated 11/03/2024
+# Updated 22/04/2024
 # **********************************************************************************************************************
 
 # **********************************************************************************************************************
@@ -98,12 +98,12 @@ MACRO(macro_find_package_default package version version_mode extra_search_paths
     if(WIN32)
         set(SEARCH_PATHS
             ${extra_search_paths}
-            "external/${package}"                 # In the same project.
-            "../${package}"                       # As subproject installation
-            "../../${package}"                    # As subproject installation
-            "C:/*${package}*"                     # In standard root folder.
-            "C:/Program Files/${package}"         # Standard installation.
-            "C:/Program Files (x86)/${package}"   # Standard installation.
+            "external/*${package}*"                 # In the same project.
+            "../*${package}*"                       # As subproject installation
+            "../../*${package}*"                    # As subproject installation
+            "C:/*${package}*"                       # In standard root folder.
+            "C:/Program Files/*${package}*"         # Standard installation.
+            "C:/Program Files (x86)/*${package}*"   # Standard installation.
         )
     else()
         set(SEARCH_PATHS
@@ -130,8 +130,6 @@ MACRO(macro_find_package_default package version version_mode extra_search_paths
             # Get the matchs.
             set(CURRENT_SEARCH "${PATH}/${PATTERN}")
             file(GLOB PATTERN_DIRS "${CURRENT_SEARCH}")
-
-            message(STATUS "  Current search: ${CURRENT_SEARCH}")
 
             # Iterate through the list of paths
             foreach(MATCH IN LISTS PATTERN_DIRS)
