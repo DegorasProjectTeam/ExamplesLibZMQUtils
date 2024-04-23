@@ -94,7 +94,7 @@ set(AVOID_QTCREATOR13_DLL_SEARCH_BUG TRUE)
 
 # Configure the LibZMQUtils package.
 include(ConfigLibZMQUtils)
-macro_configure_libzmqutils_default("1.6.4" "" "" "")
+macro_configure_libzmqutils_default("1.6.5" "" "" "")
 
 # Global include the LibZMQUtils directories.
 include_directories(${LibZMQUtils_INCLUDES})
