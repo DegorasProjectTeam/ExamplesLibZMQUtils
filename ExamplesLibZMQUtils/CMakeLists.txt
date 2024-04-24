@@ -31,7 +31,7 @@
 # **********************************************************************************************************************
 
 # **********************************************************************************************************************
-# Updated 22/04/2024
+# Updated 24/04/2024
 # **********************************************************************************************************************
 
 # **********************************************************************************************************************
@@ -59,7 +59,7 @@ macro_cmakemodules_init("24.04.22")
 
 # Base project configuration.
 set(PROJ_NAME ExamplesLibZMQUtils)
-set(PROJ_VER 1.6.4)
+set(PROJ_VER 1.6.6)
 set(PROJ_BUILD_MODE Debug)
 set(PROJ_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../${PROJ_NAME}_product_v${PROJ_VER})
 set(PROJ_LANGUAGES CXX C)
@@ -94,7 +94,7 @@ set(AVOID_QTCREATOR13_DLL_SEARCH_BUG TRUE)
 
 # Configure the LibZMQUtils package.
 include(ConfigLibZMQUtils)
-macro_configure_libzmqutils_default("1.6.5" "" "" "")
+macro_configure_libzmqutils_default("1.6.6" "" "" "")
 
 # Global include the LibZMQUtils directories.
 include_directories(${LibZMQUtils_INCLUDES})
